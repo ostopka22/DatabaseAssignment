@@ -1,0 +1,114 @@
+instructorR = open("instructor.txt", "r")
+departmentR = open("department.txt", "r")
+instructors = instructorR.readlines()
+departments = departmentR.readlines()
+instructorsDict = {}
+departmentsDict = {}
+
+for i in instructors:
+    a = i.split(',')
+    instructorsDict[a[0]] = {}
+    instructorsDict[a[0]]["id"] = a[0]
+    instructorsDict[a[0]]["Name"] = a[1]
+    if(a[2][-1] == "\n"):
+        instructorsDict[a[0]]["department"] = a[2][:-1]
+    else:
+        instructorsDict[a[0]]["department"] = a[2]
+
+for i in departments:
+    a = i.split(',')
+    departmentsDict[a[0]] = {}
+    departmentsDict[a[0]]["Name"] = a[0]
+    departmentsDict[a[0]]["Building"] = a[1]
+    if(a[2][-1] == "\n"):
+        departmentsDict[a[0]]["Budget"] = a[2][:-1]
+    else:
+        departmentsDict[a[0]]["Budget"] = a[2]
+
+instructorR.close()
+departmentR.close()
+
+choice = 0
+
+while choice != 5:
+
+    print("1. Enter the instructor ID and I will provide you with the name of the instructor, affiliated department, and the location of the department.")
+    print("2. Enter the department name and I will provide you with the location, budget and names of all instructors that work for the department.")
+    print("3. Add a record about an instructor.")
+    print("4. Delete a record about an instructor.")
+    print("5. Exit")
+
+    choice = int(input())
+
+    if choice == 1:
+        idSearch = input("Enter the instructor ID: ")
+
+        if idSearch in instructorsDict:
+
+            print("Instructor Name: " + instructorsDict[idSearch]["Name"])
+            print("Affiliated Department: " + instructorsDict[idSearch]["department"])
+            print("Location of Department: " + departmentsDict[instructorsDict[idSearch]["department"]]["Building"] + "\n")
+
+        else:
+            print("The ID does not appear in the file.\n")
+
+    elif choice == 2:
+        dep = input("Enter the department name: ")
+
+        if dep in departmentsDict:
+
+            print("Location of Department: " + departmentsDict[dep]["Building"])
+            print("Departments Budget:" + departmentsDict[dep]["Budget"])
+
+            count = 0;
+            print("instructors in the department:")
+            for i in instructorsDict:
+                if dep in instructorsDict[i]["department"]:
+                    count +=1;
+                    print(str(count) + ". " + instructorsDict[i]["Name"])
+            print('\n')
+        else:
+            print("The department name does not appear in the file.\n")
+
+    elif choice == 3:
+        flag = True
+        newId = input("Enter the instructor ID: ")
+        newName = input("Enter the instructor name: ")
+        depName = input("Enter the affiliated department name: ")
+
+
+        if newId in instructorsDict:
+            print("Instructor id already exists in the file.\n")
+            flag = False
+        if depName not in departmentsDict:
+            print("The department does not exist and hence the instructor record cannot be added to the database.\n")
+            flag = False
+
+        if flag:
+            instructorsDict[newId] = {}
+            instructorsDict[newId]["id"] = newId
+            instructorsDict[newId]["Name"] = newName
+            instructorsDict[newId]["department"] = depName
+            print("Adding Instructor...\n")
+
+    elif choice == 4:
+        searchID = input("Enter the instructor ID: ")
+
+        if searchID in instructorsDict:
+            instructorsDict.pop(searchID)
+            print("Deleting instructor: " + searchID)
+        else:
+            print("The ID does not appear in the file.")
+
+    elif choice == 5:
+        instructorW = open("instructor.txt", "w")
+        for i in instructorsDict:
+            instructorW.write(instructorsDict[i]["id"] + "," + instructorsDict[i]["Name"] + "," + instructorsDict[i]["department"] + "\n")
+        print("Updating files...")
+        instructorW.close()
+        instructorR.close()
+        departmentR.close()
+        exit()
+
+    else:
+        print("Please enter a number (1-5)")
