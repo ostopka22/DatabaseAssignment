@@ -1,0 +1,104 @@
+thisID =
+{
+    1001: {
+    "name": "Robert Smith",
+    "department": "CMPT",
+    "location": "RLC",
+    },
+
+    1002:{ "name": "Natasha Anderson",
+    "department": "MATH",
+    "location": "RLC",
+    },
+
+    1003:{ "name": "James Nassimi",
+    "department": "BIOL",
+    "location": "LEO",
+    },
+
+    1004:{ "name": "Guiling Wei",
+    "department": "CMPT",
+    "location": "RLC",
+    },
+
+    1005:{ "name": "Mary Harnett",
+    "department": "BIOL",
+    "location": "LEO",
+    },
+
+
+    1006:{ "name": "David Ochs",
+    "department": "CMPT",
+    "location": "RLC",
+    }
+
+}
+
+#thisID[ID]["name"]
+
+thisDepartment = {
+    'CMPT': ['RLC',75000],
+    'MATH': ['RLC',55000],
+    'BIOL': ['LEO',60000]
+
+}
+
+setMenu = True;
+ 
+
+
+
+
+while (setMenu == True): ## should be a flag
+    print("1. Enter the instructor ID and I will provide you with the name of the instructor, affiliated department and the location of that department.")
+    print("2. Enter the department name and I will provide you with the location, budget and names of all instructors that work for the department.")
+    print("3. Insert a record about a new instructor.")
+    print("4. Exit")
+
+    choice = int(input("Enter an option"))
+
+    
+    if (choice == 1):
+        ID = int(input("Enter the ID: "))
+        if ID in thisID:
+            print(thisID[ID])
+        else:
+            print("The ID does not appear in the database.")
+        
+    elif (choice == 2):
+        depName = input("Enter the department name: ")
+
+        if depName in thisDepartment:
+            print(thisDepartment[depName])
+                
+            for i in thisID:
+                if thisID[i]["department"] == depName:
+                    print(thisID[i]["name"])
+
+        else:
+            print("The department name does not appear in the database.")
+
+    elif (choice == 3):
+        newID = int(input("Enter the instructor id: "))
+        newInstructor = input("Enter the instructor name: ")
+        newDept = input("Enter the affiliated department name: ")
+
+        #if((newDept in thisDepartment) and (newID not in thisID)):
+            #thisID.update( { newID : new Instructor ', ' } )
+
+        if(newDept not in thisDepartment):
+            print("The department does not exist and hence the instructor record cannot be added to the database. ")
+        if(newID in thisID):
+            print("Instructor id already exists. ")
+        else:
+            thisID[newID] = {}
+            thisID[newID]["name"] = newInstructor
+            thisID[newID]["department"] = newDept
+
+    elif (choice == 4):
+        setMenu = False
+        print("Database Exited")
+
+    else:
+        print("Invalid choice. \n\n")
+        choice = int(input("Enter an option: "))
